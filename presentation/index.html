@@ -1,0 +1,557 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Anatomical Fiducials</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style>
+			.reveal .slide-number {
+				font-size: 0.35em;
+				position: fixed;
+				left: 45%;
+				width: 10%;
+				text-align: center;
+			}
+
+			.title_text{
+			    position: fixed;
+			    top: 100px; 
+			    left: 0px;
+			}
+
+			.slide_text{
+			    position: relative;
+			    top: 150px; 
+			    left: 50px;
+			    text-align: left;
+			}
+
+			ul.a{
+				list-style-type: square;
+				position: relative;
+				top: 150px; 
+				left: 50px;
+			}
+
+			ul.b{
+				list-style-type: square;
+				position: relative;
+				top: 150px; 
+				left: 0px;
+			}
+
+			ul.c{
+				list-style-type: square;
+				position: fixed;
+				top: 150px; 
+				left: 150px;
+			}
+
+			ul li ul li {
+				list-style-type: disc;
+				position: relative;
+				left: 50px;
+			}
+
+			ol.a{
+				position: relative;
+				top: 150px; 
+				left: 50px;
+				white-space: nowrap;
+			}
+
+			.reveal .imgnoborder {
+				border: 0;
+				background: 0;
+				box-shadow: none;
+				align-self: center;
+				margin: 0px;
+			}
+
+			b {
+				color: #F52F57;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section  id="title">
+					<br><br>
+					<h1> Anatomical Fiducials (AFIDS)</h1>
+					<p>
+						<medium>Getika Gupta, Greydon Gilmore</medium>
+						<br>
+						<medium>Brainhack 2019</medium>
+					</p>
+				</section>
+
+				<section  id="intro">
+					<h3 class="title_text">Introduction</h3>
+						<ul class="a">
+				            <li>Image alignment is crucial step in many neuroimaging studies
+					            <ul>
+					            	<li class="fragment"> Within/between study participants/patients</li>
+					            	<li class="fragment"> Subject to template registration</li>
+					            </ul>
+					        </li>
+				            <li class="fragment"> <b>Fiducials</b> represent anatomical feature by 3D Cartesian coordinate (x, y, z)</l>
+				            <li class="fragment">This protocol aims to increase accuracy/reliability of image registration</li>
+			          	</ul>
+				</section>
+
+				<section  id="AFIDS">
+					<h3 class="title_text">Anatomical Fiducials (AFIDS)</h3>
+						<ul class="a">
+							<li>The 32 fiducials selected are:
+								<ul>
+									<li class="fragment"> <b>Identifiable</b> across datasets</li>
+									<li class="fragment"> <b>Distributed</b> about the brain</li>
+								</ul>
+							</li>
+							<li class="fragment">Fiducials placed on any image you want to register</li>
+							<li class="fragment">Euclidean distances between fiducial points of merged objects provide more sensitive registration accuracy metric</li>
+			          	</ul>
+				</section>
+
+				<section  id="euclidean distances">
+					<h3>Euclidean distance</h3>
+						<div>
+							<img style="max-height: 360px;" class="imgnoborder" src="img/euclidean_distance.png" />
+						</div>
+
+						<script type="math/tex; mode=display">
+							d(P_{1}, P_{2}) = \sqrt{(x_{2}-x_{1})^{2}+(y_{2}-y_{1})^{2}+(z_{2}-z_{1})^{2}}
+						</script>
+				</section>
+
+				<section  id="k-means">
+					<h3>K-means clustering point clouds</h3>
+						<div>
+							<img style="max-height:60%;" class="imgnoborder" src="img/cluster_plot.png" />
+						</div>
+				</section>
+
+				<section  id="slicer_resources">
+					<br>
+					<h3>Useful 3D Slicer resources</h3>
+						<p><a href='https://discourse.slicer.org/' target='blank_'>Discourse Forum</a></p>
+						<p><a href='https://www.slicer.org/wiki/Documentation/Nightly/Training' target='blank_'>Training/Tutorials</a></p>
+						<p><a href='https://www.slicer.org/wiki/Documentation/Nightly' target='blank_'>User Manual</a></p>
+						<p><a href='https://www.slicer.org/wiki/Documentation/Nightly/Developers' target='blank_'>Developer Manual</a></p>
+						<p><a href='https://www.slicer.org/wiki/Documentation/4.10/ScriptRepository' target='blank_'>Example scripts</a></p>
+				</section>
+
+				<section  id="resources">
+					<h3 class="title_text">Tutorial session</h3>
+							<p class="slide_text">All resources for this session can be found in <a href="https://github.com/greydongilmore/AFIDS_3DSlicer.git" target='blank_'>this repository</a></p>
+				</section>
+
+				<section  id="tutorial">
+					<h3 class="title_text">Tutorial session</h3>
+							<p class="slide_text"> Today I will walk you through placement of all 32 points on an MNI template.</p>
+							<ol class="a">
+					            <li class="fragment"> Open Slicer and import image data</li>
+					            <li class="fragment"> Brightness and contrast</li>
+					            <li class="fragment"> Views: axial (red), sagittal (yellow), coronal (green)</li>
+					            <li class="fragment"> Crosshairs</li>
+					            <li class="fragment"> Right mouse button: zoom in/out</li>
+					            <li class="fragment"> Middle mouse button: pan image</li>
+				          	</ol>
+				</section>
+
+				<section  id="markups_list">
+					<h3 class="title_text">Create markups lists</h3>
+							<p class="slide_text"><b>ACPC_[VolumeID]_[Contrast]_[Rater]_[YYYYMMDD]</b><br />
+							<b>Fid32_[VolumeID]_[Contrast]_[Rater]_[YYYYMMDD]</b><br />
+							<b>midline</b></p>
+							<ul class="a">
+					            <li>[VolumeID] = template name</li>
+					            <li>[Contrast] = T1</li>
+					            <li>[Rater] = your initials</li>
+					            <li>[YYYYMMDD] = year month and date</li>
+				          	</ul>
+				</section>
+
+				<section  id="AC">
+					<h3>Anterior Commisure<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li>Place at the center of the commissure</li>
+							<li><b>Name:</b> 1</li>
+							<li><b>Description:</b> AC</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/01_AC.png" /></p>
+				</section>
+
+				<section  id="PC">
+					<h3>Posterior Commisure<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li>Place at the center of the commissure</li>
+							<li><b>Name:</b> 2</li>
+							<li><b>Description:</b> PC</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/02_PC.png" /></p>
+				</section>
+
+				<section  id="InfracollicularSulcus">
+					<h3>Infracollicular sulcus <br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 3</li>
+							<li><b>Description:</b> infracollicular sulcus</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/03_InfracollicularSulcus.png" /></p>
+				</section>
+
+				<section  id="PMJ">
+					<h3>Pontomesencephalic junction <b>[midline]</b></h3>
+						<ul class="c">
+							<li style="text-align: left"><b>Name:</b> 4</li>
+							<li><b>Description:</b> PMJ</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/04_PMJ.png" /></p>
+				</section>
+
+				<section  id="SIPF">
+					<h3 style="white-space: nowrap;">Superior interpeduncular fossa<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 5</li>
+							<li><b>Description:</b> superior interpeduncular fossa</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/05_SIPF.png" /></p>
+				</section>
+
+				<section  id="RSLMS">
+					<h3>Right superior lateral mesencephalic sulcus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 6</li>
+							<li><b>Description:</b> R superior LMS</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/06_RSLMS.png" /></p>
+				</section>
+
+				<section  id="LSLMS">
+					<h3>Left superior lateral mesencephalic sulcus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 7</li>
+							<li><b>Description:</b> L superior LMS</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/07_LSLMS.png" /></p>
+				</section>
+
+				<section  id="RILMS">
+					<h3>Right inferior lateral mesencephalic sulcus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 8</li>
+							<li><b>Description:</b> R inferior LMS</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/08_RILMS.png" /></p>
+				</section>
+
+				<section  id="LILMS">
+					<h3>Left inferior lateral mesencephalic sulcus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 9</li>
+							<li><b>Description:</b> L inferior LMS</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/09_LILMS.png" /></p>
+				</section>
+
+				<section  id="culmen">
+					<h3>Culmen<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 10</li>
+							<li><b>Description:</b> culmen</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/10_culmen.png" /></p>
+				</section>
+
+				<section  id="IMS">
+					<h3>Intermammillary sulcus<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 11</li>
+							<li><b>Description:</b> intermammillary sulcus</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/11_IMS.png" /></p>
+				</section>
+
+				<section  id="RMB">
+					<h3>Right mammillary body</h3>
+						<ul class="c">
+							<li><b>Name:</b> 12</li>
+							<li><b>Description:</b> R MB</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/12_RMB.png" /></p>
+				</section>
+
+				<section  id="LMB">
+					<h3>Left mamillary body</h3>
+						<ul class="c">
+							<li><b>Name:</b> 13</li>
+							<li><b>Description:</b> L MB</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/13_LMB.png" /></p>
+				</section>
+
+				<section  id="PG">
+					<h3>Pineal gland<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 14</li>
+							<li><b>Description:</b> pineal gland</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/14_PG.png" /></p>
+				</section>
+
+				<section  id="RLVAC">
+					<h3>Right lateral aspect of frontal horn at AC</h3>
+						<ul class="c">
+							<li><b>Name:</b> 15</li>
+							<li><b>Description:</b> R LV at AC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/15_RLVAC.png" /></p>
+				</section>
+
+				<section  id="LLVAC">
+					<h3>Left lateral aspect of frontal horn at AC</h3>
+						<ul class="c">
+							<li><b>Name:</b> 16</li>
+							<li><b>Description:</b> L LV at AC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/16_LLVAC.png" /></p>
+				</section>
+
+				<section  id="RLVPC">
+					<h3>Right lateral aspect of frontal horn on at PC</h3>
+						<ul class="c">
+							<li><b>Name:</b> 17</li>
+							<li><b>Description:</b> R LV at PC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/17_RLVPC.png" /></p>
+				</section>
+
+				<section  id="LLVPC">
+					<h3>Left lateral aspect of frontal horn at PC</h3>
+						<ul class="c">
+							<li><b>Name:</b> 18</li>
+							<li><b>Description:</b> L LV at PC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/18_LLVPC.png" /></p>
+				</section>
+
+				<section  id="Genu">
+					<h3>Genu of corpus callosum<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 19</li>
+							<li><b>Description:</b> genu of CC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/19_Genu.png" /></p>
+				</section>
+
+				<section  id="splenium">
+					<h3>Splenium of the corpus callosum<br /><span><b>[midline]</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 20</li>
+							<li><b>Description:</b> splenium of CC</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/20_splenium.png" /></p>
+				</section>
+
+				<section  id="ventricles">
+					<h3>Ventricular system</h3>
+						<br><br>
+						<div>
+							<img style="max-height:60%;" class="imgnoborder" src="img/ventricles.png" />
+						</div>
+				</section>
+
+				<section  id="RALTH">
+					<h3>Right anterolateral temporal horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 21</li>
+							<li><b>Description:</b> R AL temporal horn</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/21_RALTH.png" /></p>
+				</section>
+
+				<section  id="LALTH">
+					<h3>Left anterolateral temporal horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 22</li>
+							<li><b>Description:</b> L AL temporal horn</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/22_LALTH.png" /></p>
+				</section>
+
+				<section  id="RSAMTH">
+					<h3>Right superior AM temporal horn<br /><span><b>Rhoton's right uncal recess</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 23</li>
+							<li><b>Description:</b> R superior AM temporal horn</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/23_RSAMTH.png" /></p>
+				</section>
+
+				<section  id="LSAMTH">
+					<h3>Left superior AM temporal horn<br /><span><b>Rhoton's left uncal recess</b></span></h3>
+						<ul class="c">
+							<li><b>Name:</b> 24</li>
+							<li><b>Description:</b> L superior AM temporal horn</li>
+						</ul>
+						<br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/24_LSAMTH.png" /></p>
+				</section>
+
+				<section  id="RIAMTH">
+					<h3>Right inferior AM temporal horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 25</li>
+							<li><b>Description:</b> R inferior AM temporal horn</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/25_RIAMTH.png" /></p>
+				</section>
+
+				<section  id="LIAMTH">
+					<h3>L inferior AM temporal horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 26</li>
+							<li><b>Description:</b> L inferior AM temporal horn</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/26_LIAMTH.png" /></p>
+				</section>
+
+				<section  id="RIGO">
+					<h3>Right indusium griseum origin</h3>
+						<ul class="c">
+							<li><b>Name:</b> 27</li>
+							<li><b>Description:</b> R indusium griseum origin</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/27_RIGO.png" /></p>
+				</section>
+
+				<section  id="LIGO">
+					<h3>Left indusium griseum origin</h3>
+						<ul class="c">
+							<li><b>Name:</b> 28</li>
+							<li><b>Description:</b> L indusium griseum origin</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/28_LIGO.png" /></p>
+				</section>
+
+				<section  id="RVOH">
+					<h3>Right ventral occipital horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 29</li>
+							<li><b>Description:</b> R ventral occipital horn</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/29_RVOH.png" /></p>
+				</section>
+
+				<section  id="LVOH">
+					<h3>Left ventral occipital horn</h3>
+						<ul class="c">
+							<li><b>Name:</b> 30</li>
+							<li><b>Description:</b> L ventral occipital horn</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/30_LVOH.png" /></p>
+				</section>
+
+				<section  id="ROSF">
+					<h3>Right olfactory sulcal fundus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 31</li>
+							<li><b>Description:</b> R olfactory sulcal fundus</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/31_ROSF.png" /></p>
+				</section>
+
+				<section  id="LOSF">
+					<h3>Left olfactory sulcal fundus</h3>
+						<ul class="c">
+							<li><b>Name:</b> 32</li>
+							<li><b>Description:</b> L olfactory sulcal fundus</li>
+						</ul>
+						<br><br><br>
+						<p><img class="imgnoborder" src="../tutorial_material/img/32_LOSF.png" /></p>
+				</section>
+
+				<section  id="validate">
+					<h3>Link to validate your AFIDS</h3>
+						<br><br>
+						<p><a href='http://fidvalidator.pythonanywhere.com/' target='blank_'>AFIDS Validator</a></p>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: false,
+				slideNumber: true,
+				
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true },
+					{ src: 'plugin/math/math.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
